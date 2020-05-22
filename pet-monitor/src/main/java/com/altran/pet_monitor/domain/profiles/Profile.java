@@ -1,5 +1,6 @@
 package com.altran.pet_monitor.domain.profiles;
 
+import com.altran.pet_monitor.domain.devices.DeviceRead;
 import com.altran.pet_monitor.domain.shared.Interval;
 import com.altran.pet_monitor.util.Constants;
 import lombok.AccessLevel;
@@ -139,5 +140,7 @@ public class Profile {
         return profile;
     }
 
-
+    public boolean acceptableConditions(DeviceRead read) {
+        return acceptableConditions(read.getTemperature(), read.getHumidity());
+    }
 }

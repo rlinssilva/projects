@@ -1,6 +1,6 @@
 package com.altran.pet_monitor.infra.spring.events;
 
-import com.altran.pet_monitor.domain.DomainEvent;
+import com.altran.pet_monitor.domain.events.DomainEvent;
 import com.altran.pet_monitor.domain.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
