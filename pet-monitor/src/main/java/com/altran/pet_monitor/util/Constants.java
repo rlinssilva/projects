@@ -6,4 +6,5 @@ public class Constants {
 
     public static final String INCONSISTENT_INTERNAL_STATE = "Inconsistent internal state";
 
+    public static final String DEVICE_READ_OUT_OF_BOUNDS = "The device got environment values out of defined boundaries";
 }
