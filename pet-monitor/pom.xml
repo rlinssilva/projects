@@ -72,9 +72,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>1.7.4</version>
+			<groupId>org.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>1.24</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -14,11 +14,15 @@ import com.altran.pet_monitor.util.Constants;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class SpringContext extends Context implements ApplicationContextAware {
+
+    private static SpringContext instance;
 
     private static ApplicationContext applicationContext;
 
@@ -50,5 +54,15 @@ public class SpringContext extends Context implements ApplicationContextAware {
 
         return applicationContext.getBean(
                         implementationMap.get(beanClass));
+    }
+
+    public static Context instance() {
+        if (applicationContext == null) {
+            return null;
+        }
+        if (instance == null) {
+            instance = (SpringContext) applicationContext.getBean(SpringContext.class);
+        }
+        return instance;
     }
 }
