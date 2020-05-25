@@ -47,6 +47,7 @@ public class SpringContext extends Context implements ApplicationContextAware {
         if (!implementationMap.containsKey(beanClass)){
             throw new IllegalArgumentException(Constants.INVALID_INPUT_PARAMETERS);
         }
+
         return applicationContext.getBean(
                         implementationMap.get(beanClass));
     }

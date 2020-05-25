@@ -30,7 +30,6 @@ public class Events {
             throw new RuntimeException(e);
 
         }
-
     }
 
 }
