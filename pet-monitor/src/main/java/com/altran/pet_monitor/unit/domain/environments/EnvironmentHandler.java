@@ -52,6 +52,52 @@ public class EnvironmentHandler {
         }
     }
 
+    public void handleDeviceRead(DeviceRead read) {
+
+        if (read == null) {
+            throw new IllegalArgumentException(Constants.INVALID_INPUT_PARAMETERS);
+        }
+
+        UUID deviceId = read.getDeviceId();
+        Environment environment = environments().findByDeviceId(deviceId);
+
+        if (environment == null) {
+            throw new IllegalStateException(
+                    Constants.INVALID_INPUT_PARAMETERS);
+        }
+
+        environment
+                .check(read)
+                .forEach((k,v)->{processEnvCheckResults(read,k,v);});
+
+        eventPublisher()
+                .send(
+                        Events.newInstance(
+                                EnvironmentConditionsUpdated.class,
+                                EventContext.TEMPERATURE,
+                                Constants.TEMPERATURE_UPDATED,
+                                environment));
+
+        try {
+            deviceReads().save(read);
+        } catch (Throwable t) {
+            ExceptionUtils.printErrorMessage(t,"saving environment device read.", read.toString());
+        }
+
+    }
+
+    private void processEnvCheckResults(DeviceRead read, EventContext context, Boolean result) {
+        if (!result) {
+            eventPublisher()
+                    .send(
+                            Events.newInstance(
+                                    EnvironmentConditionsOutOfBounds.class,
+                                    context,
+                                    Constants.DEVICE_READ_OUT_OF_BOUNDS,
+                                    read));
+        }
+    }
+
     public List<Environment> findAllDisabledEnvironments() {
         return environments()
                 .findByState(EnvironmentState.DISABLED);
