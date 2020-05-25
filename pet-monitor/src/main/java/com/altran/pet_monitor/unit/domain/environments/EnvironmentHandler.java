@@ -52,12 +52,6 @@ public class EnvironmentHandler {
         }
     }
 
-    public void handleDeviceRead(DeviceRead read) {
-        if (read == null) {
-            throw new IllegalArgumentException(Constants.INVALID_INPUT_PARAMETERS);
-        }
-    }
-
     public List<Environment> findAllDisabledEnvironments() {
         return environments()
                 .findByState(EnvironmentState.DISABLED);

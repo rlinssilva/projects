@@ -25,13 +25,70 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 
+@Getter
+class DeviceReadsMock implements DeviceReads {
 
+    private boolean saved = false;
+
+    @Override
+    public DeviceRead save(DeviceRead read) {
+        saved = true;
+        return read;
+    }
+}
+
+class EnvironmentsMock implements Environments {
+
+    @Override
+    public Environment findByDeviceId(UUID deviceId) {
+        return EnvironmentTests.dougsHouse;
+    }
+
+    @Override
+    public Environment save(Environment environment) {
+        return EnvironmentTests.dougsHouse;
+    }
+
+    @Override
+    public List<Environment> findAll() {
+        return Lists.newArrayList(EnvironmentTests.dougsHouse);
+    }
+
+    @Override
+    public List<Environment> findByState(EnvironmentState state) {
+        return findAll();
+    }
+}
+
+@Getter
+class EventPublisherMock extends EventPublisher {
+
+    DomainEvent temperatureUpdatedEvent;
+
+    DomainEvent deviceReadOutOfBounds;
+
+    @Override
+    public void send(DomainEvent event) {
+        switch (event.message()) {
+            case Constants.TEMPERATURE_UPDATED:
+                temperatureUpdatedEvent = event;
+                break;
+            case Constants.DEVICE_READ_OUT_OF_BOUNDS:
+                deviceReadOutOfBounds = event;
+                break;
+        }
+    }
+}
 
 public class EnvironmentTests {
 
+
+
+
+
     private static UUID deviceId;
 
-    private static Environment dougsHouse;
+    static Environment dougsHouse;
 
     private static EnvironmentHandler environmentHandler;
 
@@ -41,8 +98,20 @@ public class EnvironmentTests {
 
     private static Set<Pet> pets;
 
+    private static DeviceReadsMock deviceReadsMock;
+    private static EventPublisherMock eventPublisherMock;
+    private static EnvironmentsMock environmentsMock;
+
     @BeforeAll
     public static void beforeAll() {
+
+
+
+        //Test case mocks
+        deviceReadsMock = new DeviceReadsMock();
+        environmentsMock = new EnvironmentsMock();
+        eventPublisherMock = new EventPublisherMock();
+
         specie = getRabbitSpecie();
         doug = getDougPet(specie);
         Set<Pet> pets = new HashSet<>();
@@ -68,74 +137,19 @@ public class EnvironmentTests {
     @Test
     public void given_deviceReadInExpectedBounds_then_notifyDataUpdated_and_saveReadData() {
 
-        @Getter
-        class DeviceReadsMock implements DeviceReads {
 
-            private boolean saved = false;
-
-            @Override
-            public DeviceRead save(DeviceRead read) {
-                saved = true;
-                return read;
-            }
-        }
-
-        class EnvironmentsMock implements Environments {
-
-            @Override
-            public Environment findByDeviceId(UUID deviceId) {
-                return dougsHouse;
-            }
-
-            @Override
-            public Environment save(Environment environment) {
-                return dougsHouse;
-            }
-
-            @Override
-            public List<Environment> findAll() {
-                return Lists.newArrayList(dougsHouse);
-            }
-
-            @Override
-            public List<Environment> findByState(EnvironmentState state) {
-                return findAll();
-            }
-        }
-
-        @Getter
-        class EventPublisherMock extends EventPublisher {
-
-            private DomainEvent temperatureUpdatedEvent;
-
-            private DomainEvent deviceReadOutOfBounds;
-
-            @Override
-            public void send(DomainEvent event) {
-                switch (event.message()) {
-                    case Constants.TEMPERATURE_UPDATED:
-                        temperatureUpdatedEvent = event;
-                        break;
-                    case Constants.DEVICE_READ_OUT_OF_BOUNDS:
-                        deviceReadOutOfBounds = event;
-                        break;
-                }
-            }
-        }
 
         //Test Case data
         int temperature = 20;
         DeviceRead deviceRead = new DeviceRead(deviceId,temperature);
 
-        //Test case mocks
-        DeviceReadsMock deviceReadsMock = new DeviceReadsMock();
-        EnvironmentsMock environmentsMock = new EnvironmentsMock();
-        EventPublisherMock eventPublisherMock = new EventPublisherMock();
+
 
         EnvironmentHandler environmentHandler = mock(EnvironmentHandler.class,
                 Mockito.CALLS_REAL_METHODS);
 
-        when(environmentHandler.deviceReads())              .thenReturn(deviceReadsMock);
+        when(environmentHandler.deviceReads())
+                .thenReturn(deviceReadsMock);
 
         when(environmentHandler.environments())
                 .thenReturn(environmentsMock);
@@ -166,7 +180,6 @@ public class EnvironmentTests {
                 .additionalData();
 
         assertEquals(temperature,updatedEnvironment.getCurrentTemperature());
-        assertNotNull(eventPublisherMock.deviceReadOutOfBounds);
 
         //checking if temperature data was saved
         assertTrue(deviceReadsMock.isSaved());
