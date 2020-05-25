@@ -19,21 +19,21 @@ public class EnvironmentHandler {
 
     private DeviceReads deviceReads;
 
-    private EventPublisher eventPublisher() {
+    EventPublisher eventPublisher() {
         if (eventPublisher == null) {
             eventPublisher = Context.eventPublisher();
         }
         return eventPublisher;
     }
 
-    private Environments environments() {
+    Environments environments() {
         if (environments == null) {
             environments = Context.environments();
         }
         return environments;
     }
 
-    private DeviceReads deviceReads() {
+    DeviceReads deviceReads() {
         if (deviceReads == null) {
             deviceReads = Context.deviceReads();
         }
@@ -49,18 +49,6 @@ public class EnvironmentHandler {
         } catch (Throwable t) {
             ExceptionUtils.printErrorMessage(t, "handling new device request.", null);
             throw new RuntimeException(t);
-        }
-    }
-
-    private void processEnvCheckResults(DeviceRead read, EventContext context, Boolean result) {
-        if (!result) {
-            eventPublisher()
-                    .send(
-                            Events.newInstance(
-                                    EnvironmentConditionsOutOfBounds.class,
-                                    context,
-                                    Constants.DEVICE_READ_OUT_OF_BOUNDS,
-                                    read));
         }
     }
 

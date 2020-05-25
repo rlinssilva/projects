@@ -30,6 +30,9 @@ public abstract class Context<T extends Context>  {
     protected abstract Object getBean(Class beanClass);
 
     public static EventPublisher eventPublisher() {
+        if (instance() == null) {
+            return null;
+        }
         if (eventPublisher == null) {
             eventPublisher = (EventPublisher) instance().getBean(EventPublisher.class);
         }
@@ -37,6 +40,9 @@ public abstract class Context<T extends Context>  {
     }
 
     public static Environments environments() {
+        if (instance() == null) {
+            return null;
+        }
         if (environments == null) {
             environments = (Environments) instance().getBean(Environments.class);
         }
@@ -44,12 +50,18 @@ public abstract class Context<T extends Context>  {
     }
 
     public static DeviceReads deviceReads() {
+        if (instance() == null) {
+            return null;
+        }
         if (deviceReads == null) {
             deviceReads = (DeviceReads) instance().getBean(DeviceReads.class);
         }
         return deviceReads;
     }
     public static Species species() {
+        if (instance() == null) {
+            return null;
+        }
         if (species == null) {
             species = (Species) instance().getBean(Species.class);
         }
@@ -57,6 +69,9 @@ public abstract class Context<T extends Context>  {
     }
 
     public static Pets pets() {
+        if (instance() == null) {
+            return null;
+        }
         if (pets == null) {
             pets = (Pets) instance().getBean(Species.class);
         }

@@ -37,6 +37,9 @@ public class Environment {
     @Transient
     private Interval<Integer> temperatureRange;
 
+    @Transient
+    private Integer currentTemperature;
+
     Environment() { }
 
     public Environment(UUID deviceId) {
