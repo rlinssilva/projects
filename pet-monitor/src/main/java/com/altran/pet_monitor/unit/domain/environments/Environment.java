@@ -73,7 +73,7 @@ public class Environment {
         setRemovedPetsAsDeallocated(removedPets);
         setPetsAsAllocated(pets);
 
-        calculateEnvironmentRanges();
+        temperatureRange = calculateEnvironmentRanges();
     }
 
     private Set<Pet> getRemovedPets(Set<Pet> pets) {
@@ -142,6 +142,8 @@ public class Environment {
         if (read == null) {
             throw new IllegalArgumentException(Constants.INVALID_INPUT_PARAMETERS);
         }
+
+        currentTemperature = read.getTemperature();
 
         Map<EventContext,Boolean> ret = new HashMap<>();
         ret.put(EventContext.TEMPERATURE, temperatureRange.contains(read.getTemperature()));
