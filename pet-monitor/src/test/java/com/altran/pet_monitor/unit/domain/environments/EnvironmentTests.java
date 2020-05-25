@@ -7,8 +7,16 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EnvironmentTests {
+
+    private static EnvironmentHandler environmentHandler;
+
+    @BeforeAll
+    public static void beforeAll() {
+
+    }
 
     @Test
     public void given_deviceReadInExpectedBounds_then_notifyDataUpdated_and_saveReadData() {
@@ -17,7 +25,9 @@ public class EnvironmentTests {
 
     @Test
     public void given_nullReadData_then_illegalArgumentExceptionExpected() {
-        fail("Not yet implemented");
+        environmentHandler = new EnvironmentHandler();
+        assertThrows(IllegalArgumentException.class,
+                () -> environmentHandler.handleDeviceRead(null));
     }
 
     @Test
