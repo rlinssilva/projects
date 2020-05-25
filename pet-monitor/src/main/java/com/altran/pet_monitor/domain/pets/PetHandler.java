@@ -80,7 +80,7 @@ public class PetHandler {
         if (thresholds != null && !thresholds.isEmpty()){
             pet.processThresholds(thresholds);
         } else {
-            pet.processSpecieThreshholds();
+            pet.processSpecieThresholds();
         }
 
         try {
