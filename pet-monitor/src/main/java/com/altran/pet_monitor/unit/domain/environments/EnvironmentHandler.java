@@ -87,7 +87,15 @@ public class EnvironmentHandler {
     }
 
     private void processEnvCheckResults(Environment environment, EventContext context, Boolean result) {
-
+        if (!result) {
+            eventPublisher()
+                    .send(
+                            Events.newInstance(
+                                    EnvironmentConditionsOutOfBounds.class,
+                                    context,
+                                    Constants.DEVICE_READ_OUT_OF_BOUNDS,
+                                    environment));
+        }
     }
 
     public List<Environment> findAllDisabledEnvironments() {
