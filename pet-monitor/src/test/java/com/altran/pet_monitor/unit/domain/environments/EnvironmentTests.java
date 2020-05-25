@@ -1,7 +1,9 @@
 package com.altran.pet_monitor.unit.domain.environments;
 
+import com.altran.pet_monitor.domain.Context;
 import com.altran.pet_monitor.domain.EventPublisher;
 import com.altran.pet_monitor.domain.events.DomainEvent;
+import com.altran.pet_monitor.domain.events.EnvironmentConditionsOutOfBounds;
 import com.altran.pet_monitor.domain.events.EnvironmentState;
 import com.altran.pet_monitor.domain.pets.Pet;
 import com.altran.pet_monitor.domain.pets.Specie;
@@ -11,6 +13,7 @@ import com.google.common.collect.Lists;
 import lombok.Getter;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -102,10 +105,8 @@ public class EnvironmentTests {
     private static EventPublisherMock eventPublisherMock;
     private static EnvironmentsMock environmentsMock;
 
-    @BeforeAll
-    public static void beforeAll() {
-
-
+    @BeforeEach
+    public void beforeAll() {
 
         //Test case mocks
         deviceReadsMock = new DeviceReadsMock();
@@ -197,7 +198,7 @@ public class EnvironmentTests {
 
     @Test
     public void given_deviceReadOutOfExpectedBounds_then_notifyUnexpectedCondictions_and_saveReadData() {
-        fail("Not yet implemented");
+        fail("Not yet implemented.");
     }
 
 }

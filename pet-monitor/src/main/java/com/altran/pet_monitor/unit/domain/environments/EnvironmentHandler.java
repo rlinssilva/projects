@@ -68,7 +68,7 @@ public class EnvironmentHandler {
 
         environment
                 .check(read)
-                .forEach((k,v)->{processEnvCheckResults(read,k,v);});
+                .forEach((k,v)->{processEnvCheckResults(environment,k,v);});
 
         eventPublisher()
                 .send(
@@ -86,16 +86,8 @@ public class EnvironmentHandler {
 
     }
 
-    private void processEnvCheckResults(DeviceRead read, EventContext context, Boolean result) {
-        if (!result) {
-            eventPublisher()
-                    .send(
-                            Events.newInstance(
-                                    EnvironmentConditionsOutOfBounds.class,
-                                    context,
-                                    Constants.DEVICE_READ_OUT_OF_BOUNDS,
-                                    read));
-        }
+    private void processEnvCheckResults(Environment environment, EventContext context, Boolean result) {
+
     }
 
     public List<Environment> findAllDisabledEnvironments() {
