@@ -1,7 +1,9 @@
 package com.altran.pet_monitor.unit.domain.environments;
 
+import com.altran.pet_monitor.domain.Context;
 import com.altran.pet_monitor.domain.EventPublisher;
 import com.altran.pet_monitor.domain.events.DomainEvent;
+import com.altran.pet_monitor.domain.events.EnvironmentConditionsOutOfBounds;
 import com.altran.pet_monitor.domain.events.EnvironmentState;
 import com.altran.pet_monitor.domain.pets.Pet;
 import com.altran.pet_monitor.domain.pets.Specie;
@@ -104,11 +106,9 @@ public class EnvironmentTests {
     private static EnvironmentsMock environmentsMock;
 
     @BeforeEach
-    public void beforeAll() {
+    public void beforeEach() {
 
-
-
-        //Test case mocks
+      //Test case mocks
         deviceReadsMock = new DeviceReadsMock();
         environmentsMock = new EnvironmentsMock();
         eventPublisherMock = new EventPublisherMock();
@@ -198,6 +198,7 @@ public class EnvironmentTests {
 
     @Test
     public void given_deviceReadOutOfExpectedBounds_then_notifyUnexpectedCondictions_and_saveReadData() {
+
         //Test Case data
         int temperature = 40;
         DeviceRead deviceRead = new DeviceRead(deviceId,temperature);
@@ -244,6 +245,7 @@ public class EnvironmentTests {
 
         //checking if temperature data was saved
         assertTrue(deviceReadsMock.isSaved());
+
     }
 
 }

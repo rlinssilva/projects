@@ -87,7 +87,7 @@ public class EnvironmentHandler {
     }
 
     private void processEnvCheckResults(Environment environment, EventContext context, Boolean result) {
-        
+
     }
 
     public List<Environment> findAllDisabledEnvironments() {
