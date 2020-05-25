@@ -1,4 +1,4 @@
-package com.altran.pet_monitor.domain.environments;
+package com.altran.pet_monitor.unit.domain.environments;
 
 import com.altran.pet_monitor.domain.Context;
 import com.altran.pet_monitor.domain.EventPublisher;
@@ -64,39 +64,7 @@ public class EnvironmentHandler {
         }
     }
 
-    public void handleDeviceRead(DeviceRead read) {
 
-        if (read == null) {
-            throw new IllegalArgumentException(Constants.INVALID_INPUT_PARAMETERS);
-        }
-
-        UUID deviceId = read.getDeviceId();
-        Environment environment = environments().findByDeviceId(deviceId);
-
-        if (environment == null) {
-            throw new IllegalStateException(
-                    Constants.INVALID_INPUT_PARAMETERS);
-        }
-
-        eventPublisher()
-                .send(
-                        Events.newInstance(
-                                EnvironmentConditionsUpdated.class,
-                                EventContext.TEMPERATURE,
-                                Constants.TEMPERATURE_UPDATED,
-                                environment));
-
-        environment
-                .check(read)
-                .forEach((k,v)->{processEnvCheckResults(read,k,v);});
-
-        try {
-            deviceReads().save(read);
-        } catch (Throwable t) {
-            ExceptionUtils.printErrorMessage(t,"saving environment device read.", read.toString());
-        }
-
-    }
 
     public List<Environment> findAllDisabledEnvironments() {
         return environments()

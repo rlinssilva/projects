@@ -1,4 +1,4 @@
-package com.altran.pet_monitor.domain.environments;
+package com.altran.pet_monitor.unit.domain.environments;
 
 import com.altran.pet_monitor.domain.events.EnvironmentState;
 

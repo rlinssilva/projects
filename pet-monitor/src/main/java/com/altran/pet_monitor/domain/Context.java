@@ -1,7 +1,7 @@
 package com.altran.pet_monitor.domain;
 
-import com.altran.pet_monitor.domain.environments.DeviceReads;
-import com.altran.pet_monitor.domain.environments.Environments;
+import com.altran.pet_monitor.unit.domain.environments.DeviceReads;
+import com.altran.pet_monitor.unit.domain.environments.Environments;
 import com.altran.pet_monitor.domain.pets.Pets;
 import com.altran.pet_monitor.domain.pets.Species;
 import com.altran.pet_monitor.infra.spring.events.SpringContext;

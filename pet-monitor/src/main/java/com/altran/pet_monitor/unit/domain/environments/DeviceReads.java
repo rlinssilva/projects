@@ -1,4 +1,4 @@
-package com.altran.pet_monitor.domain.environments;
+package com.altran.pet_monitor.unit.domain.environments;
 
 public interface DeviceReads {
 
