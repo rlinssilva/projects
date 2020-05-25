@@ -1,6 +1,6 @@
 package com.altran.pet_monitor.domain.events;
 
-import com.altran.pet_monitor.domain.environments.Environment;
+import com.altran.pet_monitor.unit.domain.environments.Environment;
 
 public class EnvironmentConditionsOutOfBounds implements DomainEvent<Environment, EnvironmentConditionsOutOfBounds> {
 
