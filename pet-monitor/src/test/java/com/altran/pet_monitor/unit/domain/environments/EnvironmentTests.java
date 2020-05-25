@@ -106,9 +106,9 @@ public class EnvironmentTests {
     private static EnvironmentsMock environmentsMock;
 
     @BeforeEach
-    public void beforeAll() {
+    public void beforeEach() {
 
-        //Test case mocks
+      //Test case mocks
         deviceReadsMock = new DeviceReadsMock();
         environmentsMock = new EnvironmentsMock();
         eventPublisherMock = new EventPublisherMock();
@@ -198,7 +198,54 @@ public class EnvironmentTests {
 
     @Test
     public void given_deviceReadOutOfExpectedBounds_then_notifyUnexpectedCondictions_and_saveReadData() {
-        fail("Not yet implemented.");
+
+        //Test Case data
+        int temperature = 40;
+        DeviceRead deviceRead = new DeviceRead(deviceId,temperature);
+
+        EnvironmentHandler environmentHandler = mock(EnvironmentHandler.class,
+                Mockito.CALLS_REAL_METHODS);
+
+        when(environmentHandler.deviceReads())
+                .thenReturn(deviceReadsMock);
+
+        when(environmentHandler.environments())
+                .thenReturn(environmentsMock);
+
+        when(environmentHandler.eventPublisher())
+                .thenReturn(eventPublisherMock);
+
+        //checking negative condtions before running the method being tested
+        assertNull(eventPublisherMock.temperatureUpdatedEvent);
+        assertNull(eventPublisherMock.deviceReadOutOfBounds);
+        assertFalse(deviceReadsMock.isSaved());
+
+        //running tested method
+        environmentHandler.handleDeviceRead(deviceRead);
+
+        //checking if temperature  was updated
+        assertNotNull(eventPublisherMock.temperatureUpdatedEvent);
+        assertNotNull(eventPublisherMock.temperatureUpdatedEvent.additionalData());
+
+        assertTrue(Environment.class.isAssignableFrom(
+                eventPublisherMock
+                        .temperatureUpdatedEvent
+                        .additionalData()
+                        .getClass()));
+
+        Environment updatedEnvironment = (Environment) eventPublisherMock
+                .temperatureUpdatedEvent
+                .additionalData();
+
+        assertEquals(temperature,updatedEnvironment.getCurrentTemperature());
+
+        //checking if unexpected condictions event was reported
+        assertNotNull(eventPublisherMock.deviceReadOutOfBounds);
+        assertEquals(Constants.DEVICE_READ_OUT_OF_BOUNDS,eventPublisherMock.deviceReadOutOfBounds.message());
+
+        //checking if temperature data was saved
+        assertTrue(deviceReadsMock.isSaved());
+
     }
 
 }
