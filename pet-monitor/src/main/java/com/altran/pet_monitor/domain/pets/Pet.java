@@ -112,7 +112,7 @@ public class Pet {
         state = PetState.DEALLOCATED;
     }
 
-    public void processSpecieThreshholds() {
+    public void processSpecieThresholds() {
         if (getSpecie() != null) {
             throw new IllegalStateException(Constants.INCONSISTENT_STATE);
         }
